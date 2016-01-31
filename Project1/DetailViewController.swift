@@ -7,11 +7,27 @@
 //
 
 import UIKit
+import Social
 
 class DetailViewController: UIViewController {
 
     
     @IBOutlet weak var detailImageView: UIImageView!
+    
+    
+    func shareTapped() {
+        /* lets you share. First parameter is the thing(s) you're sharing and second is addtional sharing options
+        let vc = UIActivityViewController(activityItems: [detailImageView.image!], applicationActivities: [])
+        presentViewController(vc, animated: true, completion: nil)
+        */
+        
+        let vc = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+        vc.setInitialText("Testing")
+        vc.addImage(detailImageView.image!)
+        vc.addURL(NSURL(string: "http://www.photolib.noaa.gov/nssl"))
+        presentViewController(vc, animated: true, completion: nil)
+
+    }
 
 
     var detailItem: String? {
@@ -34,6 +50,8 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: "shareTapped")
     }
     
     override func viewWillAppear(animated: Bool) {
